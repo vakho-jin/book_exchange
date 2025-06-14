@@ -22,7 +22,11 @@ RESTful API წიგნების გაცვლის სერვისი
    ```bash
    git clone https://github.com/vakho-jin/book_exchange.git
    cd book_exchange
-
+   python -m venv bookenv
+   source myenv/bin/activate
+      # On Windows System: myenv\Scripts\activate
+   docker-compose up --build
+      
 ## API წერტილები
 
 **ავტორიზაცია:**
