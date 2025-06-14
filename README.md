@@ -18,7 +18,7 @@ RESTful API წიგნების გაცვლის სერვისი
 
 ## დაყენების ინსტრუქცია
 
-1. **დაკლონეთ რეპოზიტორია**:
+   **დაკლონეთ რეპოზიტორია**:
    ```bash
    git clone https://github.com/vakho-jin/book_exchange.git
    cd book_exchange
