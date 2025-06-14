@@ -1,0 +1,185 @@
+openapi: 3.0.3
+info:
+  title: წიგნიების გაცვლის სერვისი
+  version: 1.0.0
+  description: წიგნიების გაცვლის სერვისის API, რომელიც საშუალებას აძლევს მომხმარებლებს დარეგისტრირდნენ, დაამატონ, მოითხოვონ და მართონ წიგნები.
+paths:
+  /api/register/:
+    post:
+      summary: ახალი მომხმარებლის რეგისტრაცია
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+                - username
+                - email
+                - password
+      responses:
+        '201':
+          description: მომხმარებელი დარეგისტრირდა
+  /api/books/:
+    get:
+      summary: ყველა წიგნის სია
+      parameters:
+        - name: author
+          in: query
+          schema:
+            type: integer
+        - name: genre
+          in: query
+          schema:
+            type: integer
+        - name: year
+          in: query
+          schema:
+            type: integer
+        - name: condition
+          in: query
+          schema:
+            type: integer
+        - name: is_available
+          in: query
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: წიგნების სია
+    post:
+      summary: ახალი წიგნის დამატება
+      security:
+        - Bearer: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+      responses:
+        '201':
+          description: წიგნი დამატებულია
+  /api/books/{id}/:
+    get:
+      summary: წიგნის შესახებ
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: წიგნის შესახებ ინფორმაცია
+    put:
+      summary: წიგნის განახლება
+      security:
+        - Bearer: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+      responses:
+        '200':
+          description: წიგნი განახლებულია
+    delete:
+      summary: წიგნის წაშლა
+      security:
+        - Bearer: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: წიგნი წაშლილია
+  /api/requests/:
+    post:
+      summary: წიგნის მოთხოვნა
+      security:
+        - Bearer: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookRequest'
+      responses:
+        '201':
+          description: მოთხოვნა შექმნილია
+  /api/requests/{id}/select/:
+    put:
+      summary: წიგნის მიმღების არჩევა
+      security:
+        - Bearer: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: მიმღები არჩეულია
+components:
+  schemas:
+    Book:
+      type: object
+      properties:
+        title:
+          type: string
+        author:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+        genre:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+        condition:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+        year:
+          type: integer
+        description:
+          type: string
+        location:
+          type: string
+        is_available:
+          type: boolean
+    BookRequest:
+      type: object
+      properties:
+        book:
+          type: integer
+        status:
+          type: string
+          enum: [PENDING, APPROVED, REJECTED]
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
