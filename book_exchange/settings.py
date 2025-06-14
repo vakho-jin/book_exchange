@@ -1,11 +1,11 @@
-#import os
+import os
 from pathlib import Path
-#from decouple import config
+from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-zkx)vo#_%j%ai4*s_01k76p!!(*3^#eo2)a(%986jj42c4*46k'
-DEBUG = True
+SECRET_KEY = config('DJANGO_SECRET_KEY', default='your-secret-key')
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
 
